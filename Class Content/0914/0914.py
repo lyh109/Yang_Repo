@@ -12,7 +12,7 @@ x = 0
 frame_index = 0
 action = 0
 
-while(x < 800):
+while x < 800:
     clear_canvas()
     gra.draw(400, 30)
     cha.clip_draw(100 * frame_index, 100 * action, 100, 100, x, 85)
@@ -20,8 +20,8 @@ while(x < 800):
 
     get_events()
     
-    x+= 2
-    if (x % 100 == 0):
+    x += 2
+    if x % 100 == 0:
         action = (action + 1) % 4
     frame_index = (frame_index + 1) % 8
     delay(0.01)
