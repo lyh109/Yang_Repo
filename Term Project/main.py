@@ -29,7 +29,12 @@ def handle_events():
                 running = False
             elif e.key == SDLK_SPACE:
                 Player.action = 1
+                Player.fidx = 0
                 Player.fidy = 6
+            elif e.key == SDLK_DOWN:
+                Player.action = 2
+                Player.fidy = 1
+                Player.fidx = 10
 
 flow = 0
 nf = 0
@@ -61,8 +66,25 @@ while True:
 
             Player.x += Player.dx
             Player.image.clip_draw(2 + (Player.fidx * 272), 1634 - (Player.fidy * 272), 270, 270, Player.x, Player.y, 180, 180)
-            Player.fidx = (Player.fidx + 1) % 4
-
+            if Player.action == 0:
+                Player.fidx = (Player.fidx + 1) % 4
+            elif Player.action == 1:
+                if Player.y % 20 == 0:
+                    Player.fidx = (Player.fidx + 1) % 5
+                if jump_up:
+                    Player.y += 1
+                    if Player.y >= 308:
+                        jump_up = False
+                else:
+                    Player.y -= 1
+                    if Player.y <= 208:
+                        jump_up = True
+                        Player.action = 0
+                        Player.fidx = 0
+                        Player.fidy = 2
+            elif Player.action == 2:
+                pass
+            
             if alpha >= 1.0:
                alpha_up = False 
                alpha = 1.0
@@ -75,10 +97,27 @@ while True:
             alpha -= 0.001
 
             Player.image.clip_draw(2 + (Player.fidx * 272), 1634 - (Player.fidy * 272), 270, 270, Player.x, Player.y, 180, 180)
-            Player.fidx = (Player.fidx + 1) % 4
-
-            if Player.x < 150:
-                Player.x += 0.4
+            if Player.action == 0:
+                Player.fidx = (Player.fidx + 1) % 4
+                if Player.x < 150:
+                    Player.x += 0.4
+            elif Player.action == 1:
+                if Player.y % 20 == 0:
+                    Player.fidx = (Player.fidx + 1) % 5
+                if jump_up:
+                    Player.y += 1
+                    if Player.y >= 308:
+                        jump_up = False
+                else:
+                    Player.y -= 1
+                    if Player.y <= 208:
+                        jump_up = True
+                        Player.action = 0
+                        Player.fidx = 0
+                        Player.fidy = 2      
+            elif Player.action == 2:
+                pass
+            
             
             if alpha <= 0.0:
                 alpha_up = True
@@ -99,22 +138,26 @@ while True:
                     run = False
 
         Player.image.clip_draw(2 + (Player.fidx * 272), 1634 - (Player.fidy * 272), 270, 270, Player.x, Player.y, 180, 180)
+
         if Player.action == 0:
             Player.fidx = (Player.fidx + 1) % 4
         elif Player.action == 1:
-            if Player.y % 5 == 30:
+            if Player.y % 20 == 0:
                 Player.fidx = (Player.fidx + 1) % 5
-            # if jump_up:
-            #    Player.y += 1
-            #    if Player.y >= 350:
-            #        jump_up = False
-            # else:
-            #    Player.y -= 1
-            #    if Player.y <= 208:
-            #        jump_up = True
-            #        Player.action = 0
+            if jump_up:
+               Player.y += 1
+               if Player.y >= 308:
+                   jump_up = False
+            else:
+               Player.y -= 1
+               if Player.y <= 208:
+                   jump_up = True
+                   Player.action = 0
+                   Player.fidx = 0
+                   Player.fidy = 2
+        elif Player.action == 2:
+            pass
 
-    print(flow)
     update_canvas()
 
 close_canvas()
