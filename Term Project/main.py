@@ -24,6 +24,11 @@ def handle_events():
     for e in evts:
         if e.type == SDL_QUIT:
             running = False
+        elif e.type == SDL_KEYUP:
+            if e.key == SDLK_DOWN:
+                Player.action = 0
+                Player.fidx = 0
+                Player.fidy = 2
         elif e.type == SDL_KEYDOWN:
             if e.key == SDLK_ESCAPE:
                 running = False
@@ -33,9 +38,9 @@ def handle_events():
                 Player.fidy = 6
             elif e.key == SDLK_DOWN:
                 Player.action = 2
-                Player.fidy = 1
                 Player.fidx = 10
-
+                Player.fidy = 1
+        
 flow = 0
 nf = 0
 stage = 0
@@ -138,7 +143,9 @@ while True:
                     run = False
 
         Player.image.clip_draw(2 + (Player.fidx * 272), 1634 - (Player.fidy * 272), 270, 270, Player.x, Player.y, 180, 180)
-
+        if Player.x < 150:
+            Player.x += 0.4
+        
         if Player.action == 0:
             Player.fidx = (Player.fidx + 1) % 4
         elif Player.action == 1:
