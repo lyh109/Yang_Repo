@@ -1,12 +1,15 @@
 import gfw
+from cookie import Cookie
 
 class MainState:
     def init(self):
-        self.cookie = gfw.Sprite('./res/Brave_Cookie.png')
-        gfw.renderer.add(self.cookie)
+        self.cookie = Cookie()
 
     def update(self):
-        self.cookie.x += 100.0 * gfw.delta_time
+        self.cookie.update()
+
+        if gfw.eh.get_mouse_button(gfw.eh.LBUTTON):
+            print(gfw.eh.mouse_pos[0])
 
 if __name__ == '__main__':
     gfw.init(MainState())

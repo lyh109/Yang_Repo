@@ -1,5 +1,6 @@
 from pico2d import *
 import time
+import gfw.events_handler as eh
 from gfw.renderer import Renderer
 from gfw.sprite import Sprite
 
@@ -26,7 +27,8 @@ def run():
     while running:
         start_time = time.time()
 
-        get_events()
+        if eh.update() == False:
+            break
 
         states[0].update()
 
