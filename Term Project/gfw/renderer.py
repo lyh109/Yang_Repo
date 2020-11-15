@@ -12,9 +12,13 @@ class Renderer:
                 i.cell_image_width, 
                 i.cell_image_height, 
                 i.x, 
-                i.y)
+                i.y,
+                i.cell_image_width * i.scale_x,
+                i.cell_image_height * i.scale_y)
             else:
-                i.image.draw(i.x, i.y)
+                x = i.x + i.image.w * i.scale_x * (0.5 - i.origin_x)
+                y = i.y + i.image.h * i.scale_y * (0.5 - i.origin_y)
+                i.image.draw(x, y, i.image.w * i.scale_x, i.image.h * i.scale_y)
 
     def add(self, sprite):
         self.sprites.append(sprite)

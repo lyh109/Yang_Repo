@@ -9,6 +9,8 @@ class Cookie:
         self.cookie.cell_image_height = 270
         self.cookie.cell_index_x = 1
         self.cookie.cell_index_y = 4
+        self.cookie.scale_x = 1.0
+        self.cookie.scale_y = 1.0
         gfw.renderer.add(self.cookie)
 
         self.elapsed_time = 0.0

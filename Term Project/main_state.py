@@ -1,8 +1,10 @@
 import gfw
 from cookie import Cookie
+from background import Background
 
 class MainState:
     def init(self):
+        self.background = Background()
         self.cookie = Cookie()
 
     def update(self):
