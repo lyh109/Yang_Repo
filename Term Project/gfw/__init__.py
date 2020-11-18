@@ -7,7 +7,7 @@ from gfw.sprite import Sprite
 FPS = 60.0
 
 SCREEN_WIDTH = 1100
-SCREEN_HEIGHT = 600
+SCREEN_HEIGHT = 640
 
 running = True
 delta_time = 0.0

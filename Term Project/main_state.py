@@ -4,10 +4,9 @@ from background import Background
 
 class MainState:
     def init(self):
-        self.background = Background('./res/bk2.png')
-        self.background.repeat_count = 2
-        self.background.speed = 0.5
-
+        self.background = Background('./res/bk1-1.png', 2, 0.15)
+        self.background = Background('./res/bk1-2.png', 2, 0.3)
+       
         self.cookie = Cookie()
 
     def update(self):
