@@ -8,7 +8,7 @@ class MainState:
         self.background2 = Background('./res/bk11-2.png', 3, 0.2)
         self.background3 = Background('./res/bk11-3.png', 2, 0.4)
         self.background4 = Background('./res/bk11-4.png', 2, 0.6)
-
+        
         self.cookie = Cookie()
 
     def update(self):
