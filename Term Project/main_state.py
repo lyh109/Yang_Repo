@@ -6,7 +6,6 @@ class MainState:
     def init(self):
         self.background = Background('./res/bk1-1.png', 2, 0.15)
         self.background = Background('./res/bk1-2.png', 2, 0.3)
-       
         self.cookie = Cookie()
 
     def update(self):

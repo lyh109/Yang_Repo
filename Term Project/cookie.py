@@ -1,6 +1,7 @@
+from pico2d import *
 import gfw
 
-ACC = 0.1
+ACC = 0.2
 
 class Cookie:
     def __init__(self):
@@ -14,13 +15,16 @@ class Cookie:
         self.cookie.scale_x = 1.0
         self.cookie.scale_y = 1.0
         self.cookie.x = 100.0
-        self.cookie.y = 200.0        
+        self.cookie.y = 200.0       
         gfw.renderer.add(self.cookie)
 
         self.acc = 0.0
         self.elapsed_time = 0.0
         self.speedY = 0.0
         self.state = 0
+
+        self.jump_sound = load_wav('./res/sound/jump.ogg')
+        self.slide_sound = load_wav('./res/sound/slide.ogg')
 
     def update(self):
         self.speedY -= ACC
@@ -33,11 +37,18 @@ class Cookie:
 
         if gfw.eh.get_key_down(gfw.SDLK_SPACE):
             if self.state < 2:
-                self.speedY = 7.0
+                self.speedY = 8.0
                 self.state += 1
                 self.cookie.cell_index_x = 1
+                self.jump_sound.play()
+
+        elif gfw.eh.get_key_down(gfw.SDLK_DOWN):
+            if self.state == 0:
+                self.slide_sound.play()
+
         elif gfw.eh.get_key(gfw.SDLK_DOWN):
-            self.state = -1
+            if self.state == 0:
+                self.state = -1
         
 
         # Update animation
@@ -57,5 +68,3 @@ class Cookie:
                 self.cookie.cell_index_x = 9
                 self.cookie.cell_index_y = 5
             self.elapsed_time = 0.0
-
-        print(self.state)

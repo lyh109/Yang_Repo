@@ -1,8 +1,11 @@
+from pico2d import *
 import gfw
 
 class Background:
     def __init__(self, image_path, repeat_count, speed):
         self.speed = speed
+        self.bgm = load_music('./res/sound/bgm_gameplay.ogg')
+        self.bgm.repeat_play()
 
         self.back_pieces = [  gfw.Sprite(image_path) for i in range(repeat_count) ]
         for i in range(0, repeat_count):
