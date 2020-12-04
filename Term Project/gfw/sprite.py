@@ -8,6 +8,7 @@ class Sprite:
         self.scale_y = 1.0
         self.origin_x = 0.5
         self.origin_y = 0.5
+        self.active = True
         self.image = None
         
         self.is_clip_image = False
