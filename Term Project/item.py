@@ -1,7 +1,9 @@
+from pico2d import *
 import gfw
 
 class Item:
     def __init__(self, data, offsetX):
+        self.ate_sound = load_wav('./res/sound/jelly.ogg')
         self.frame_count = 0
         self.kind = int(data['name'][1])
 
@@ -55,3 +57,5 @@ class Item:
         
         self.col_box_x = self.spr.x
         self.col_box_y = self.spr.y
+
+       

@@ -12,8 +12,8 @@ class MainState:
     ITEM_P_COUNT = 2 # 아이템 패턴 개수
 
     def init(self):
-        # self.bgm = load_music('./res/sound/bgm_gameplay.ogg')
-        # self.bgm.repeat_play()
+        self.bgm = load_music('./res/sound/bgm_gameplay.ogg')
+        self.bgm.repeat_play()
         
         self.background1 = Background('./res/bk/bk11-1.png', 2, 0.1, 2)
         self.background2 = Background('./res/bk/bk11-2.png', 3, 0.2, 2)
@@ -59,6 +59,7 @@ class MainState:
 
             if cookie_col_left <= right and cookie_col_right >= left and cookie_col_bottom <= top and cookie_col_top >= bottom:
                 i.spr.active = False
+                i.ate_sound.play()
 
             draw_rectangle(cookie_col_left, cookie_col_bottom, cookie_col_right, cookie_col_top)
             draw_rectangle(left, bottom, right, top)
