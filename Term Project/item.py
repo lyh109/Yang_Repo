@@ -45,3 +45,6 @@ class Item:
         gfw.renderer.add(self.spr)
 
         self.score = 0.0
+
+    def update(self):
+        self.spr.x -= 200.0 * gfw.delta_time

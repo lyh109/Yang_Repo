@@ -24,8 +24,9 @@ class MainState:
         with open('./res/data/objects.json') as f:
             objects = json.load(f)
 
+        self.items = []
         for o in objects:
-            item = Item(o)
+            self.items.append(Item(o))
 
     def update(self):
         self.cookie.update()
@@ -34,6 +35,9 @@ class MainState:
         self.background3.update()
         self.background4.update()
         self.tile.update()
+
+        for i in self.items:
+            i.update()
 
 if __name__ == '__main__':
     gfw.init(MainState())
