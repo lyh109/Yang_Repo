@@ -1,6 +1,7 @@
 from gfw import sprite
 from pico2d import *
 import json
+import random
 
 import gfw
 from cookie import Cookie
@@ -8,6 +9,8 @@ from background import Background
 from item import Item
 
 class MainState:
+    ITEM_P_COUNT = 2 # 아이템 패턴 개수
+
     def init(self):
         # self.bgm = load_music('./res/sound/bgm_gameplay.ogg')
         # self.bgm.repeat_play()
@@ -20,13 +23,15 @@ class MainState:
         
         self.cookie = Cookie()
 
-        objects = None
-        with open('./res/data/objects.json') as f:
-            objects = json.load(f)
-
         self.items = []
-        for o in objects:
-            self.items.append(Item(o))
+
+        for i in range(5):
+            objects = None
+            with open('./res/data/objects' + str(random.randrange(0, self.ITEM_P_COUNT)) + '.json') as f:
+                objects = json.load(f)
+
+            for o in objects:
+                self.items.append(Item(o, i * gfw.SCREEN_WIDTH))
 
     def update(self):
         self.cookie.update()

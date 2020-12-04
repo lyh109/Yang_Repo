@@ -1,7 +1,7 @@
 import gfw
 
 class Item:
-    def __init__(self, data):
+    def __init__(self, data, offsetX):
         self.frame_count = 0
         self.kind = int(data['name'][1])
 
@@ -37,7 +37,7 @@ class Item:
             self.spr.cell_image_width = 55
         
         self.spr.cell_image_height = 51       
-        self.spr.x = data["x"]
+        self.spr.x = data["x"] + offsetX
         self.spr.y = data["y"]
         self.spr.is_clip_image = True
         self.spr.padding_size = 2
