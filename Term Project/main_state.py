@@ -41,8 +41,27 @@ class MainState:
         self.background4.update()
         self.tile.update()
 
+        cookie_col_left = self.cookie.col_box_x - self.cookie.col_box_w * 0.5
+        cookie_col_right = self.cookie.col_box_x + self.cookie.col_box_w * 0.5
+        cookie_col_bottom= self.cookie.col_box_y - self.cookie.col_box_h * 0.5
+        cookie_col_top= self.cookie.col_box_y + self.cookie.col_box_h * 0.5
+
         for i in self.items:
+            if i.spr.active == False:
+                continue
+
             i.update()
+
+            left = i.col_box_x - i.col_box_w * 0.5
+            right = i.col_box_x + i.col_box_w * 0.5
+            bottom = i.col_box_y - i.col_box_h * 0.5
+            top = i.col_box_y + i.col_box_h * 0.5
+
+            if cookie_col_left <= right and cookie_col_right >= left and cookie_col_bottom <= top and cookie_col_top >= bottom:
+                i.spr.active = False
+
+            draw_rectangle(cookie_col_left, cookie_col_bottom, cookie_col_right, cookie_col_top)
+            draw_rectangle(left, bottom, right, top)
 
 if __name__ == '__main__':
     gfw.init(MainState())

@@ -32,6 +32,12 @@ class Cookie:
         self.jump_sound = load_wav('./res/sound/jump.ogg')
         self.slide_sound = load_wav('./res/sound/slide.ogg')
 
+        self.col_box_x = self.cookie.x
+        self.col_box_y = self.cookie.y
+        self.col_box_w = 100
+        self.col_box_h = 100
+
+
     def update(self):
         self.speedY -= ACC
         self.cookie.y += self.speedY
@@ -73,3 +79,8 @@ class Cookie:
                 self.cookie.cell_index_x = 9
                 self.cookie.cell_index_y = 5
             self.elapsed_time = 0.0
+
+        self.col_box_x = self.cookie.x
+        self.col_box_y = self.cookie.y - 70.0
+
+        

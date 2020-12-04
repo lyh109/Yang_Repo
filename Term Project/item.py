@@ -45,6 +45,13 @@ class Item:
         gfw.renderer.add(self.spr)
 
         self.score = 0.0
+        self.col_box_x = self.spr.x
+        self.col_box_y = self.spr.y
+        self.col_box_w = self.spr.cell_image_width
+        self.col_box_h = self.spr.cell_image_height
 
     def update(self):
         self.spr.x -= 200.0 * gfw.delta_time
+        
+        self.col_box_x = self.spr.x
+        self.col_box_y = self.spr.y
