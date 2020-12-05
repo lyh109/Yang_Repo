@@ -21,6 +21,14 @@ class Object:
         else:
             self.col_box_w = self.spr.image.w
             self.col_box_h = self.spr.image.h
+
+    def get_col_box(self):
+        left = self.col_box_x - self.col_box_w * 0.5
+        right = self.col_box_x + self.col_box_w * 0.5
+        bottom = self.col_box_y - self.col_box_h * 0.5
+        top = self.col_box_y + self.col_box_h * 0.5
+        
+        return left, right, bottom, top
         
 
 class Jelly(Object):

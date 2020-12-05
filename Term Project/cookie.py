@@ -1,3 +1,4 @@
+from importlib.util import spec_from_loader
 from pico2d import *
 import gfw
 
@@ -34,21 +35,60 @@ class Cookie:
 
         self.col_box_x = self.cookie.x
         self.col_box_y = self.cookie.y
-        
 
         self.col_box_w = 100
         self.col_box_h = 130        
 
-    def update(self):
+    def update(self, tiles):
         self.speedY -= ACC
-        self.cookie.y += self.speedY
+        to_y = self.cookie.y + self.speedY
 
-        if self.cookie.y <= MIN_Y:
-            self.cookie.y = MIN_Y
-            self.speedY = 0.0
+        col_box_w, col_box_h, col_box_x, col_box_y = 0.0, 0.0, 0.0, 0.0
+        if self.state == RUN:
+            col_box_w = 100
+            col_box_h = 130
+            col_box_x = self.cookie.x
+            col_box_y = to_y - 65.0
+        elif self.state == SLIDE:
+            col_box_w = 160
+            col_box_h = 70
+            col_box_x = self.cookie.x
+            col_box_y = to_y - 100.0
+        elif self.state == JUMP:
+            col_box_w = 100
+            col_box_h = 120
+            col_box_x = self.cookie.x
+            col_box_y = to_y - 80.0
+        elif self.state == DOUBLE_JUMP:
+            col_box_w = 100
+            col_box_h = 130
+            col_box_x = self.cookie.x
+            col_box_y = to_y - 65.0 
             
+        if to_y <= MIN_Y:
+            to_y = MIN_Y
+            self.speedY = 0.0
+
             if self.state >= JUMP:
                 self.state = RUN
+        elif self.speedY < 0.0:
+            cookie_left = col_box_x - col_box_w * 0.5
+            cookie_right = col_box_x + col_box_w * 0.5
+            cookie_bottom = col_box_y - col_box_h * 0.5
+            cookie_top = col_box_y + col_box_h * 0.5
+
+            for i in tiles:
+                left, right, bottom, top = i.get_col_box()
+                if cookie_left <= right and cookie_right >= left and cookie_bottom <= top and cookie_top >= bottom:
+                    self.speedY = 0.0
+
+                    if self.state >= JUMP:
+                        self.state = RUN
+
+                    to_y = top + 130
+                    break
+        
+        self.cookie.y = to_y
 
         if gfw.eh.get_key_down(gfw.SDLK_SPACE):
             if self.state < DOUBLE_JUMP:
@@ -101,3 +141,13 @@ class Cookie:
                 self.cookie.cell_index_x = 9
                 self.cookie.cell_index_y = 5
             self.elapsed_time = 0.0
+
+    def get_col_box(self):
+        left = self.col_box_x - self.col_box_w * 0.5
+        right = self.col_box_x + self.col_box_w * 0.5
+        bottom = self.col_box_y - self.col_box_h * 0.5
+        top = self.col_box_y + self.col_box_h * 0.5
+
+        return left, right, bottom, top
+
+        
