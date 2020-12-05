@@ -6,7 +6,7 @@ import random
 import gfw
 from cookie import Cookie
 from background import Background
-from item import Item
+from object import Jelly, Tile
 
 class MainState:
     ITEM_P_COUNT = 2 # 아이템 패턴 개수
@@ -19,19 +19,23 @@ class MainState:
         self.background2 = Background('./res/bk/bk11-2.png', 3, 0.2, 2)
         self.background3 = Background('./res/bk/bk11-3.png', 2, 0.4, 2)
         self.background4 = Background('./res/bk/bk11-4.png', 2, 0.6, 2)
-        self.tile = Background('./res/tile/tile11.png', 12, 3.0, 1)
+        self.tile = Background('./res/stage/11/t0.png', 12, 3.0, 1)
         
         self.cookie = Cookie()
 
-        self.items = []
+        self.objs = []
 
         for i in range(5):
             objects = None
-            with open('./res/data/objects' + str(random.randrange(0, self.ITEM_P_COUNT)) + '.json') as f:
+            # with open('./res/data/objects' + str(random.randrange(0, self.ITEM_P_COUNT)) + '.json') as f:
+            with open('./res/data/objects2.json') as f:
                 objects = json.load(f)
 
             for o in objects:
-                self.items.append(Item(o, i * gfw.SCREEN_WIDTH))
+                if o['name'][0] == 'j':
+                    self.objs.append(Jelly(o, i * gfw.SCREEN_WIDTH))
+                else:
+                    self.objs.append(Tile(o, i * gfw.SCREEN_WIDTH))
 
     def update(self):
         self.cookie.update()
@@ -46,7 +50,7 @@ class MainState:
         cookie_col_bottom= self.cookie.col_box_y - self.cookie.col_box_h * 0.5
         cookie_col_top= self.cookie.col_box_y + self.cookie.col_box_h * 0.5
 
-        for i in self.items:
+        for i in self.objs:
             if i.spr.active == False:
                 continue
 
@@ -57,12 +61,15 @@ class MainState:
             bottom = i.col_box_y - i.col_box_h * 0.5
             top = i.col_box_y + i.col_box_h * 0.5
 
-            if cookie_col_left <= right and cookie_col_right >= left and cookie_col_bottom <= top and cookie_col_top >= bottom:
-                i.spr.active = False
-                i.ate_sound.play()
+            if type(i) == Jelly:
+                if cookie_col_left <= right and cookie_col_right >= left and cookie_col_bottom <= top and cookie_col_top >= bottom:
+                    i.spr.active = False
+                    i.ate_sound.play()
 
-            draw_rectangle(cookie_col_left, cookie_col_bottom, cookie_col_right, cookie_col_top)
             draw_rectangle(left, bottom, right, top)
+        
+        draw_rectangle(cookie_col_left, cookie_col_bottom, cookie_col_right, cookie_col_top)
+        
 
 if __name__ == '__main__':
     gfw.init(MainState())

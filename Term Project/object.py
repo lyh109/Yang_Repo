@@ -1,8 +1,32 @@
 from pico2d import *
 import gfw
 
-class Item:
-    def __init__(self, data, offsetX):
+class Object:
+    def __init__(self, data, offset_x):
+        self.spr = None
+
+    def update(self):
+        self.spr.x -= 200.0 * gfw.delta_time
+        
+        self.col_box_x = self.spr.x
+        self.col_box_y = self.spr.y
+
+    def init_col_box(self):
+        self.col_box_x = self.spr.x
+        self.col_box_y = self.spr.y
+
+        if self.spr.is_clip_image:
+            self.col_box_w = self.spr.cell_image_width
+            self.col_box_h = self.spr.cell_image_height
+        else:
+            self.col_box_w = self.spr.image.w
+            self.col_box_h = self.spr.image.h
+        
+
+class Jelly(Object):
+    def __init__(self, data, offset_x):
+        super().__init__(data, offset_x)
+
         self.ate_sound = load_wav('./res/sound/jelly.ogg')
         self.frame_count = 0
         self.kind = int(data['name'][1])
@@ -37,25 +61,25 @@ class Item:
                 self.spr.cell_index_x = 10
 
             self.spr.cell_image_width = 55
-        
+
         self.spr.cell_image_height = 51       
-        self.spr.x = data["x"] + offsetX
+        self.spr.x = data["x"] + offset_x
         self.spr.y = data["y"]
         self.spr.is_clip_image = True
         self.spr.padding_size = 2
         self.spr.cell_index_y = 0
+        self.score = 0.0
         gfw.renderer.add(self.spr)
 
-        self.score = 0.0
-        self.col_box_x = self.spr.x
-        self.col_box_y = self.spr.y
-        self.col_box_w = self.spr.cell_image_width
-        self.col_box_h = self.spr.cell_image_height
+        self.init_col_box()
 
-    def update(self):
-        self.spr.x -= 200.0 * gfw.delta_time
+class Tile(Object):
+    def __init__(self, data, offset_x):
+        self.spr = gfw.Sprite('./res/stage/11/t1.png')
+        self.spr.x = data["x"] + offset_x
+        self.spr.y = data["y"]
+        gfw.renderer.add(self.spr)
+
+        self.init_col_box()
+
         
-        self.col_box_x = self.spr.x
-        self.col_box_y = self.spr.y
-
-       
