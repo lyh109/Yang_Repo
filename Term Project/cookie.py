@@ -34,9 +34,10 @@ class Cookie:
 
         self.col_box_x = self.cookie.x
         self.col_box_y = self.cookie.y
-        self.col_box_w = 100
-        self.col_box_h = 100
+        
 
+        self.col_box_w = 100
+        self.col_box_h = 130        
 
     def update(self):
         self.speedY -= ACC
@@ -63,6 +64,27 @@ class Cookie:
             if self.state == SLIDE:
                 self.state = RUN
 
+        if self.state == RUN:
+            self.col_box_w = 100
+            self.col_box_h = 130
+            self.col_box_x = self.cookie.x
+            self.col_box_y = self.cookie.y - 65.0
+        elif self.state == SLIDE:
+            self.col_box_w = 160
+            self.col_box_h = 70
+            self.col_box_x = self.cookie.x
+            self.col_box_y = self.cookie.y - 100.0
+        elif self.state == JUMP:
+            self.col_box_w = 100
+            self.col_box_h = 120
+            self.col_box_x = self.cookie.x
+            self.col_box_y = self.cookie.y - 80.0
+        elif self.state == DOUBLE_JUMP:
+            self.col_box_w = 100
+            self.col_box_h = 130
+            self.col_box_x = self.cookie.x
+            self.col_box_y = self.cookie.y - 65.0
+
         # Update animation
         self.elapsed_time += gfw.delta_time
         if self.elapsed_time >= 0.07:
@@ -79,8 +101,3 @@ class Cookie:
                 self.cookie.cell_index_x = 9
                 self.cookie.cell_index_y = 5
             self.elapsed_time = 0.0
-
-        self.col_box_x = self.cookie.x
-        self.col_box_y = self.cookie.y - 70.0
-
-        
