@@ -2,7 +2,7 @@ from importlib.util import spec_from_loader
 from pico2d import *
 import gfw
 
-ACC = 0.25
+ACC = 1.0
 RUN = 0
 JUMP = 1
 DOUBLE_JUMP = 2
@@ -10,7 +10,6 @@ SLIDE = -1
 MIN_Y = 250.0
 
 class Cookie:
-
     def __init__(self):
         self.cookie = gfw.Sprite('./res/Brave_Cookie.png')
         self.cookie.is_clip_image = True
@@ -92,7 +91,7 @@ class Cookie:
 
         if gfw.eh.get_key_down(gfw.SDLK_SPACE):
             if self.state < DOUBLE_JUMP:
-                self.speedY = 8.0
+                self.speedY = 20.0
                 self.state = JUMP if self.state < JUMP else DOUBLE_JUMP
                 self.cookie.cell_index_x = 1
                 self.jump_sound.play()
