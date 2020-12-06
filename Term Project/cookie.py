@@ -7,21 +7,35 @@ RUN = 0
 JUMP = 1
 DOUBLE_JUMP = 2
 SLIDE = -1
-MIN_Y = 250.0
 
 class Cookie:
-    def __init__(self):
-        self.cookie = gfw.Sprite('./res/Brave_Cookie.png')
+    def __init__(self, image_path, cell_image_w, cell_image_h, min_y):
+        # #self.cookie = gfw.Sprite('./res/Brave_Cookie.png')
+        # self.cookie.is_clip_image = True
+        # self.cookie.padding_size = 2
+        # self.cookie.cell_image_width = 270
+        # self.cookie.cell_image_height = 270
+        # self.cookie.cell_index_x = 1
+        # self.cookie.cell_index_y = 4
+        # self.cookie.scale_x = 1.0
+        # self.cookie.scale_y = 1.0
+        # self.cookie.x = 120.0
+        # self.cookie.y = MIN_Y
+
+        self.min_y = min_y
+
+        self.cookie = gfw.Sprite(image_path)
         self.cookie.is_clip_image = True
         self.cookie.padding_size = 2
-        self.cookie.cell_image_width = 270
-        self.cookie.cell_image_height = 270
+        self.cookie.cell_image_width = cell_image_w
+        self.cookie.cell_image_height = cell_image_h
         self.cookie.cell_index_x = 1
         self.cookie.cell_index_y = 4
         self.cookie.scale_x = 1.0
         self.cookie.scale_y = 1.0
         self.cookie.x = 120.0
-        self.cookie.y = MIN_Y      
+        self.cookie.y = self.min_y        
+
         gfw.renderer.add(self.cookie)
 
         self.acc = 0.0
@@ -34,9 +48,24 @@ class Cookie:
 
         self.col_box_x = self.cookie.x
         self.col_box_y = self.cookie.y
+        self.col_box_w = 0.0
+        self.col_box_h = 0.0
 
-        self.col_box_w = 100
-        self.col_box_h = 130
+        self.run_col_box_w = 0.0
+        self.run_col_box_h = 0.0
+        self.run_col_offset_y = 0.0
+
+        self.slide_col_box_w = 0.0
+        self.slide_col_box_h = 0.0
+        self.slide_col_offset_y = 0.0
+
+        self.jump_col_box_w = 0.0
+        self.jump_col_box_h = 0.0
+        self.jump_col_offset_y = 0.0
+
+        self.djump_col_box_w = 0.0
+        self.djump_col_box_h = 0.0
+        self.djump_col_offset_y = 0.0
 
         self.hp = 100.0
 
@@ -46,28 +75,28 @@ class Cookie:
 
         col_box_w, col_box_h, col_box_x, col_box_y = 0.0, 0.0, 0.0, 0.0
         if self.state == RUN:
-            col_box_w = 100
-            col_box_h = 130
+            col_box_w = self.run_col_box_w
+            col_box_h = self.run_col_box_h
             col_box_x = self.cookie.x
-            col_box_y = to_y - 65.0
+            col_box_y = to_y - self.run_col_offset_y
         elif self.state == SLIDE:
-            col_box_w = 160
-            col_box_h = 70
+            col_box_w = self.slide_col_box_w
+            col_box_h = self.slide_col_box_h
             col_box_x = self.cookie.x
-            col_box_y = to_y - 100.0
+            col_box_y = to_y - self.slide_col_offset_y
         elif self.state == JUMP:
-            col_box_w = 100
-            col_box_h = 120
+            col_box_w = self.jump_col_box_w
+            col_box_h = self.jump_col_box_h
             col_box_x = self.cookie.x
-            col_box_y = to_y - 80.0
+            col_box_y = to_y - self.jump_col_offset_y
         elif self.state == DOUBLE_JUMP:
-            col_box_w = 100
-            col_box_h = 130
+            col_box_w = self.djump_col_box_w
+            col_box_h = self.djump_col_box_h
             col_box_x = self.cookie.x
-            col_box_y = to_y - 65.0 
+            col_box_y = to_y - self.djump_col_offset_y 
             
-        if to_y <= MIN_Y:
-            to_y = MIN_Y
+        if to_y <= self.min_y:
+            to_y = self.min_y
             self.speedY = 0.0
 
             if self.state >= JUMP:
@@ -106,25 +135,25 @@ class Cookie:
                 self.state = RUN
 
         if self.state == RUN:
-            self.col_box_w = 100
-            self.col_box_h = 130
+            self.col_box_w = self.run_col_box_w
+            self.col_box_h = self.run_col_box_h
             self.col_box_x = self.cookie.x
-            self.col_box_y = self.cookie.y - 65.0
+            self.col_box_y = to_y - self.run_col_offset_y
         elif self.state == SLIDE:
-            self.col_box_w = 160
-            self.col_box_h = 70
+            self.col_box_w = self.slide_col_box_w
+            self.col_box_h = self.slide_col_box_h
             self.col_box_x = self.cookie.x
-            self.col_box_y = self.cookie.y - 100.0
+            self.col_box_y = to_y - self.slide_col_offset_y
         elif self.state == JUMP:
-            self.col_box_w = 100
-            self.col_box_h = 120
+            self.col_box_w = self.jump_col_box_w
+            self.col_box_h = self.jump_col_box_h
             self.col_box_x = self.cookie.x
-            self.col_box_y = self.cookie.y - 80.0
+            self.col_box_y = to_y - self.jump_col_offset_y
         elif self.state == DOUBLE_JUMP:
-            self.col_box_w = 100
-            self.col_box_h = 130
+            self.col_box_w = self.djump_col_box_w
+            self.col_box_h = self.djump_col_box_h
             self.col_box_x = self.cookie.x
-            self.col_box_y = self.cookie.y - 65.0
+            self.col_box_y = to_y - self.djump_col_offset_y 
 
         # Update animation
         self.elapsed_time += gfw.delta_time
@@ -156,4 +185,44 @@ class Cookie:
     def hit(self, dhp):
         self.hp -= dhp
         self.cookie.alpha = 0.5 
+    
+class BraveCookie(Cookie):
+    def __init__(self):
+        super().__init__('./res/Brave_Cookie.png', 270, 270, 250.0)
+
+        self.run_col_box_w = 100.0
+        self.run_col_box_h = 130.0
+        self.run_col_offset_y = 65.0
+
+        self.slide_col_box_w = 160.0
+        self.slide_col_box_h = 70.0
+        self.slide_col_offset_y = 100.0
+
+        self.jump_col_box_w = 100.0
+        self.jump_col_box_h = 120.0
+        self.jump_col_offset_y = 80.0
+
+        self.djump_col_box_w = 100.0
+        self.djump_col_box_h = 130.0
+        self.djump_col_offset_y = 65.0
         
+class ZombieCookie(Cookie):
+    def __init__(self):
+        super().__init__('./res/Zombie_Cookie.png', 320, 320, 275.0)
+
+        self.run_col_box_w = 100.0
+        self.run_col_box_h = 130.0
+        self.run_col_offset_y = 95.0
+
+        self.slide_col_box_w = 160.0
+        self.slide_col_box_h = 70.0
+        self.slide_col_offset_y = 120.0
+
+        self.jump_col_box_w = 100.0
+        self.jump_col_box_h = 110.0
+        self.jump_col_offset_y = 95.0
+
+        self.djump_col_box_w = 100.0
+        self.djump_col_box_h = 130.0
+        self.djump_col_offset_y = 75.0
+

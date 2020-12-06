@@ -4,7 +4,7 @@ import json
 import random
 
 import gfw
-from cookie import Cookie
+from cookie import BraveCookie, Cookie, ZombieCookie
 from background import Background
 from object import Jelly, Tile, Obstacle, Dessert, Potion
 
@@ -12,8 +12,8 @@ class MainState:
     ITEM_P_COUNT = 4 # 아이템 패턴 개수
 
     def init(self):
-        self.bgm = load_music('./res/sound/bgm_gameplay.mp3')
-        self.bgm.repeat_play()
+        #self.bgm = load_music('./res/sound/bgm_gameplay.mp3')
+        #self.bgm.repeat_play()
         
         self.background1 = Background('./res/bk/bk6-1.png', 2, 400.0, 2)
         self.background2 = Background('./res/bk/bk6-2.png', 2, 450.0, 2)
@@ -44,7 +44,7 @@ class MainState:
                     self.obstacles.append(Obstacle(o, i * gfw.SCREEN_WIDTH))
                     
 
-        self.cookie = Cookie()
+        self.cookie = ZombieCookie()
 
         self.hp_bar = gfw.Sprite('./res/hp_bar.jpg')
         self.hp_bar.x = 30.0
