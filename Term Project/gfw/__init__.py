@@ -3,6 +3,7 @@ import time
 import gfw.events_handler as eh
 from gfw.renderer import Renderer
 from gfw.sprite import Sprite
+from gfw.text import Text
 
 FPS = 60.0
 
@@ -33,10 +34,11 @@ def run():
         if eh.update() == False:
             break
 
-        states[0].update()
+        # states[0].update()
 
         clear_canvas()
         renderer.draw()
+        states[0].update()
         update_canvas()
         
         delay_time = 1 / FPS - (time.time() - start_time)

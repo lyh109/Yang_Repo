@@ -3,6 +3,7 @@ from gfw.sprite import Sprite
 class Renderer:
     def __init__(self):
         self.sprites = []
+        self.fonts = []
 
     def draw(self):
         for i in self.sprites:
@@ -25,5 +26,11 @@ class Renderer:
                 y = i.y + i.image.h * i.scale_y * (0.5 - i.origin_y)
                 i.image.draw(x, y, i.image.w * i.scale_x, i.image.h * i.scale_y)
 
+        for i in self.fonts:
+            i.ttf.draw(i.x, i.y, i.text, (i.color_r, i.color_g, i.color_b))
+
     def add(self, sprite):
         self.sprites.append(sprite)
+
+    def add_font(self, font):
+        self.fonts.append(font)
