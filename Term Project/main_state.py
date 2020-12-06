@@ -103,10 +103,16 @@ class MainState:
             i.update()
 
         for i in self.obstacles:
-            left, right, bottom, top = i.get_col_box()
             i.update()
+
+            left, right, bottom, top = i.get_col_box()
+            if cookie_left <= right and cookie_right >= left and cookie_bottom <= top and cookie_top >= bottom:
+                if self.cookie.cookie.alpha >= 1.0:
+                    i.attack_sound.play()
+                    self.cookie.hit(10)
+
             draw_rectangle(left, bottom, right, top)
-        
+
         self.cookie.update(self.tiles)
         draw_rectangle(cookie_left, cookie_bottom, cookie_right, cookie_top)
 

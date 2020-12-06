@@ -99,6 +99,9 @@ class Obstacle(Object):
     def __init__(self, data, offset_x):
         super().__init__(data, offset_x)
 
+        self.attack_sound = load_wav('./res/sound/obs.wav')
+        self.attack_sound.set_volume(128)
+
         self.kind = data['name'][1]
         self.spr = gfw.Sprite('./res/stage/6/o' + self.kind + '.png')
         self.spr.x = data["x"] + offset_x

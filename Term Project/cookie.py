@@ -143,6 +143,8 @@ class Cookie:
                 self.cookie.cell_index_y = 5
             self.elapsed_time = 0.0
 
+        self.cookie.alpha = min(1.0, self.cookie.alpha + 0.5 * gfw.delta_time)
+
     def get_col_box(self):
         left = self.col_box_x - self.col_box_w * 0.5
         right = self.col_box_x + self.col_box_w * 0.5
@@ -151,4 +153,7 @@ class Cookie:
 
         return left, right, bottom, top
 
+    def hit(self, dhp):
+        self.hp -= dhp
+        self.cookie.alpha = 0.5 
         
