@@ -9,6 +9,8 @@ class Renderer:
             if i.active == False:
                 continue
 
+            i.image.opacify(i.alpha)
+
             if i.is_clip_image:
                 i.image.clip_draw(i.padding_size + (i.cell_image_width + i.padding_size) * i.cell_index_x, 
                 i.padding_size + (i.cell_image_height + i.padding_size) * i.cell_index_y, 
