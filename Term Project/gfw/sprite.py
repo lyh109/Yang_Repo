@@ -1,7 +1,9 @@
 from pico2d import *
 
 class Sprite:
-    def __init__(self, image_path = None):
+    images = {}
+
+    def __init__(self, image_path):
         self.x = 0.0
         self.y = 0.0
         self.scale_x = 1.0
@@ -19,5 +21,7 @@ class Sprite:
         self.cell_index_y = 0
         self.padding_size = 0
         
-        if not image_path is None:
-            self.image = load_image(image_path)
+        if not image_path in self.images:
+            self.images[image_path] = load_image(image_path)
+
+        self.image = self.images[image_path]
