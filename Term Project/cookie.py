@@ -1,5 +1,7 @@
 from importlib.util import spec_from_loader
+
 from pico2d import *
+
 import gfw
 
 ACC = 1.0
@@ -70,6 +72,50 @@ class Cookie:
         self.hp = 100.0
 
     def update(self, tiles):
+        if self.hp > 0.0:
+            self.DoAction(tiles)
+
+        # Update animation
+        self.elapsed_time += gfw.delta_time
+        if self.elapsed_time >= 0.07:
+            if self.hp > 0.0:
+                if self.state == RUN:
+                    self.cookie.cell_index_x = int(self.cookie.cell_index_x + 1) % 4
+                    self.cookie.cell_index_y = 4
+                elif self.state == JUMP:
+                    self.cookie.cell_index_x = 7
+                    self.cookie.cell_index_y = 5
+                elif self.state == DOUBLE_JUMP:
+                    self.cookie.cell_index_x = int(self.cookie.cell_index_x + 1) % 6
+                    self.cookie.cell_index_y = 5
+                elif self.state == SLIDE:
+                    self.cookie.cell_index_x = 9
+                    self.cookie.cell_index_y = 5
+            else:
+                self.cookie.cell_index_x = min(9, self.cookie.cell_index_x + 1)
+                
+            self.elapsed_time = 0.0
+
+    def get_col_box(self):
+        left = self.col_box_x - self.col_box_w * 0.5
+        right = self.col_box_x + self.col_box_w * 0.5
+        bottom = self.col_box_y - self.col_box_h * 0.5
+        top = self.col_box_y + self.col_box_h * 0.5
+
+        return left, right, bottom, top
+
+    def hit(self, dhp):
+        self.hp -= dhp
+
+        if self.hp > 0.0:   
+            self.cookie.alpha = 0.5
+            return True
+        else:
+            self.cookie.cell_index_x = 5
+            self.cookie.cell_index_y = 1
+            return False
+
+    def DoAction(self, tiles):
         self.speedY -= ACC
         to_y = self.cookie.y + self.speedY
 
@@ -153,38 +199,9 @@ class Cookie:
             self.col_box_w = self.djump_col_box_w
             self.col_box_h = self.djump_col_box_h
             self.col_box_x = self.cookie.x
-            self.col_box_y = to_y - self.djump_col_offset_y 
-
-        # Update animation
-        self.elapsed_time += gfw.delta_time
-        if self.elapsed_time >= 0.07:
-            if self.state == RUN:
-                self.cookie.cell_index_x = int(self.cookie.cell_index_x + 1) % 4
-                self.cookie.cell_index_y = 4
-            elif self.state == JUMP:
-                self.cookie.cell_index_x = 7
-                self.cookie.cell_index_y = 5
-            elif self.state == DOUBLE_JUMP:
-                self.cookie.cell_index_x = int(self.cookie.cell_index_x + 1) % 6
-                self.cookie.cell_index_y = 5
-            elif self.state == SLIDE:
-                self.cookie.cell_index_x = 9
-                self.cookie.cell_index_y = 5
-            self.elapsed_time = 0.0
+            self.col_box_y = to_y - self.djump_col_offset_y
 
         self.cookie.alpha = min(1.0, self.cookie.alpha + 0.5 * gfw.delta_time)
-
-    def get_col_box(self):
-        left = self.col_box_x - self.col_box_w * 0.5
-        right = self.col_box_x + self.col_box_w * 0.5
-        bottom = self.col_box_y - self.col_box_h * 0.5
-        top = self.col_box_y + self.col_box_h * 0.5
-
-        return left, right, bottom, top
-
-    def hit(self, dhp):
-        self.hp -= dhp
-        self.cookie.alpha = 0.5 
     
 class BraveCookie(Cookie):
     def __init__(self):

@@ -1,4 +1,4 @@
-from gfw import SCREEN_HEIGHT, sprite
+from gfw import SCREEN_HEIGHT, SCREEN_WIDTH, sprite
 from pico2d import *
 import json
 import random
@@ -14,6 +14,18 @@ class MainState:
     def init(self):
         #self.bgm = load_music('./res/sound/bgm_gameplay.mp3')
         #self.bgm.repeat_play()
+
+        self.game_over_sound = load_music('./res/sound/end.mp3')
+        self.game_over_sound.set_volume(64)
+
+        self.font = gfw.Text('./res/font.ttf', 32)
+        self.font.x = SCREEN_WIDTH - 250.0
+        self.font.y = SCREEN_HEIGHT - 60.0
+        self.font.color_r = 0
+        self.font.color_g = 0
+        self.font.color_b = 0
+        self.font.text = 'Score: 0'
+        gfw.renderer.add_font(self.font)
         
         self.background1 = Background('./res/bk/bk6-1.png', 2, 400.0, 2)
         self.background2 = Background('./res/bk/bk6-2.png', 2, 450.0, 2)
@@ -70,53 +82,59 @@ class MainState:
         self.hp.origin_y = 1.0
         gfw.renderer.add(self.hp)
 
+        self.score = 0.0
+
     def update(self):
-        self.cookie.hp -= gfw.delta_time * 2.0
-        if self.cookie.hp <= 0.0:
-            return
-
-        self.background1.update()
-        self.background2.update()
-        self.background3.update()
-        self.background4.update()
-        self.tile.update()
-
         cookie_left, cookie_right, cookie_bottom, cookie_top = self.cookie.get_col_box()
+    
+        self.cookie.hp - max(0.0, gfw.delta_time * 2.0)
+        if self.cookie.hp > 0.0:
+            self.background1.update()
+            self.background2.update()
+            self.background3.update()
+            self.background4.update()
+            self.tile.update()
 
-        for i in self.items:
-            if i.spr.active == False:
-                continue
+            for i in self.items:
+                if i.spr.active == False:
+                    continue
 
-            i.update()
+                i.update()
 
-            left, right, bottom, top = i.get_col_box()
-            if cookie_left <= right and cookie_right >= left and cookie_bottom <= top and cookie_top >= bottom:
-                i.spr.active = False
-                i.ate_sound.play()
+                left, right, bottom, top = i.get_col_box()
+                if cookie_left <= right and cookie_right >= left and cookie_bottom <= top and cookie_top >= bottom:
+                    i.spr.active = False
+                    i.ate_sound.play()
 
-                if type(i) == Potion:
-                    self.cookie.hp = min(100.0, self.cookie.hp + i.hp) # TODO: 함수화 시키자
+                    if type(i) == Potion:
+                        self.cookie.hp = min(100.0, self.cookie.hp + i.hp)
+                    else:
+                        self.score += i.score
 
-            draw_rectangle(left, bottom, right, top)
+                draw_rectangle(left, bottom, right, top)
 
-        for i in self.tiles:
-            i.update()
+            for i in self.tiles:
+                i.update()
 
-        for i in self.obstacles:
-            i.update()
+            for i in self.obstacles:
+                i.update()
 
-            left, right, bottom, top = i.get_col_box()
-            if cookie_left <= right and cookie_right >= left and cookie_bottom <= top and cookie_top >= bottom:
-                if self.cookie.cookie.alpha >= 1.0:
-                    i.attack_sound.play()
-                    self.cookie.hit(10)
+                left, right, bottom, top = i.get_col_box()
+                if cookie_left <= right and cookie_right >= left and cookie_bottom <= top and cookie_top >= bottom:
+                    if self.cookie.cookie.alpha >= 1.0:
+                        i.attack_sound.play()
+                        if self.cookie.hit(10) == False:
+                            self.game_over_sound.play()
 
-            draw_rectangle(left, bottom, right, top)
+                draw_rectangle(left, bottom, right, top)
+
+            self.hp.x += (self.cookie.hp * (465.0 / 100) + 70.0 - self.hp.x) * 5.0 * gfw.delta_time
+            self.score += gfw.delta_time * 2.0
 
         self.cookie.update(self.tiles)
         draw_rectangle(cookie_left, cookie_bottom, cookie_right, cookie_top)
 
-        self.hp.x += (self.cookie.hp * (465.0 / 100) + 70.0 - self.hp.x) * 5.0 * gfw.delta_time
+        self.font.text = 'score: ' + str(int(self.score))
         
 if __name__ == '__main__':
     gfw.init(MainState())

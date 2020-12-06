@@ -40,6 +40,7 @@ class Jelly(Object):
         self.frame_count = 0
         self.kind = int(data['name'][1])
 
+        self.score = 0
         if data['name'] == 'j0' or data['name'] == 'j1':
             self.spr = gfw.Sprite('./res/basic_jellies.png')
             self.frame_count = 3
