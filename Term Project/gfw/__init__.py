@@ -27,6 +27,7 @@ def init(state):
 def run():
     global running
     global delta_time
+    global states
     
     while running:
         start_time = time.time()
@@ -38,7 +39,7 @@ def run():
 
         clear_canvas()
         renderer.draw()
-        states[0].update()
+        states[-1].update()
         update_canvas()
         
         delay_time = 1 / FPS - (time.time() - start_time)
@@ -47,4 +48,42 @@ def run():
 
         delta_time = time.time() - start_time
 
+    while states:
+        states[-1].exit()
+        states.pop()
+
     close_canvas()
+
+def quit():
+    global running
+    running = False
+
+def change_state(state):
+    global states
+
+    if states:
+        states[-1].exit()
+        states.pop()
+
+    states.append(state)
+    state.init()
+
+def push_state(state):
+    global states
+
+    if states:
+        states[-1].pause()
+
+    states.append(state)
+    state.init()
+
+def pop_state():
+    global states
+
+    if len(states) > 1:
+        states[-1].exit()
+        states.pop()
+
+        states[-1].resume()
+    else:
+        quit()
