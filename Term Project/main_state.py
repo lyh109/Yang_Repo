@@ -6,7 +6,7 @@ import random
 import gfw
 from cookie import Cookie
 from background import Background
-from object import Jelly, Tile, Obstacle, Dessert
+from object import Jelly, Tile, Obstacle, Dessert, Potion
 
 class MainState:
     ITEM_P_COUNT = 4 # 아이템 패턴 개수
@@ -27,7 +27,7 @@ class MainState:
 
         for i in range(5):
             objects = None
-            # with open('./res/data/objects' + str(random.randrange(0, self.ITEM_P_COUNT)) + '.json') as f:
+            #with open('./res/data/objects' + str(random.randrange(0, self.ITEM_P_COUNT)) + '.json') as f:
             with open('./res/data/objects4.json') as f:
                 objects = json.load(f)
 
@@ -36,11 +36,14 @@ class MainState:
                     self.jellies.append(Jelly(o, i * gfw.SCREEN_WIDTH))
                 elif o['name'][0] == 'd':
                     self.jellies.append(Dessert(o, i * gfw.SCREEN_WIDTH))
+                elif o['name'][0] == 'p':
+                    self.jellies.append(Potion(o, i * gfw.SCREEN_WIDTH))
                 elif o['name'][0] == 't':
                     self.tiles.append(Tile(o, i * gfw.SCREEN_WIDTH))
                 elif o['name'][0] == 'o':
                     self.obstacles.append(Obstacle(o, i * gfw.SCREEN_WIDTH))
                     
+
         self.cookie = Cookie()
 
     def update(self):
