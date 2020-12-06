@@ -20,7 +20,7 @@ class Cookie:
         self.cookie.cell_index_y = 4
         self.cookie.scale_x = 1.0
         self.cookie.scale_y = 1.0
-        self.cookie.x = 100.0
+        self.cookie.x = 120.0
         self.cookie.y = MIN_Y      
         gfw.renderer.add(self.cookie)
 
@@ -29,8 +29,8 @@ class Cookie:
         self.speedY = 0.0
         self.state = RUN
 
-        self.jump_sound = load_wav('./res/sound/jump.ogg')
-        self.slide_sound = load_wav('./res/sound/slide.ogg')
+        self.jump_sound = load_wav('./res/sound/jump.wav')
+        self.slide_sound = load_wav('./res/sound/slide.wav')
 
         self.col_box_x = self.cookie.x
         self.col_box_y = self.cookie.y

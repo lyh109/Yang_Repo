@@ -1,12 +1,13 @@
 from pico2d import *
 import gfw
+import random
 
 class Object:
     def __init__(self, data, offset_x):
         self.spr = None
 
     def update(self):
-        self.spr.x -= 200.0 * gfw.delta_time
+        self.spr.x -= 450.0 * gfw.delta_time
         
         self.col_box_x = self.spr.x
         self.col_box_y = self.spr.y
@@ -35,7 +36,7 @@ class Jelly(Object):
     def __init__(self, data, offset_x):
         super().__init__(data, offset_x)
 
-        self.ate_sound = load_wav('./res/sound/jelly.ogg')
+        self.ate_sound = load_wav('./res/sound/jelly.wav')
         self.frame_count = 0
         self.kind = int(data['name'][1])
 
@@ -44,6 +45,7 @@ class Jelly(Object):
             self.frame_count = 3
             self.spr.cell_image_width = 38
             self.spr.cell_index_x = self.kind * self.frame_count
+            self.score = 10
         else:
             self.spr = gfw.Sprite('./res/bear_jellies.png')
             if self.kind % 2 == 0:
@@ -69,6 +71,7 @@ class Jelly(Object):
                 self.spr.cell_index_x = 10
 
             self.spr.cell_image_width = 55
+            self.score = 20
 
         self.spr.cell_image_height = 51       
         self.spr.x = data["x"] + offset_x
@@ -76,18 +79,51 @@ class Jelly(Object):
         self.spr.is_clip_image = True
         self.spr.padding_size = 2
         self.spr.cell_index_y = 0
-        self.score = 0.0
+
         gfw.renderer.add(self.spr)
 
         self.init_col_box()
 
 class Tile(Object):
     def __init__(self, data, offset_x):
-        self.spr = gfw.Sprite('./res/stage/11/t1.png')
+        super().__init__(data, offset_x)
+
+        self.spr = gfw.Sprite('./res/stage/6/t1.png')
         self.spr.x = data["x"] + offset_x
         self.spr.y = data["y"]
         gfw.renderer.add(self.spr)
 
         self.init_col_box()
 
-        
+class Obstacle(Object):
+    def __init__(self, data, offset_x):
+        super().__init__(data, offset_x)
+
+        self.spr = gfw.Sprite('./res/stage/6/o' + str(data['name'][1]) + '.png')
+        self.spr.x = data["x"] + offset_x
+        self.spr.y = data["y"]
+        gfw.renderer.add(self.spr)
+
+        self.init_col_box()
+
+class Dessert(Object):
+    def __init__(self, data, offset_x):
+        super().__init__(data, offset_x)
+
+        self.ate_sound = load_wav('./res/sound/dessert.wav')
+        self.spr = gfw.Sprite('./res/desserts.png')
+        self.spr.x = data["x"] + offset_x
+        self.spr.y = data["y"]
+        self.spr.cell_image_width = 66
+        self.spr.cell_image_height = 66
+        self.spr.is_clip_image = True
+        self.spr.padding_size = 2
+
+        self.kind = random.randrange(0, 30)
+        self.spr.cell_index_x = self.kind
+        self.spr.cell_index_y = 0
+
+        gfw.renderer.add(self.spr)
+
+        self.score = 30
+        self.init_col_box()
