@@ -36,7 +36,9 @@ class Cookie:
         self.col_box_y = self.cookie.y
 
         self.col_box_w = 100
-        self.col_box_h = 130        
+        self.col_box_h = 130
+
+        self.hp = 100.0
 
     def update(self, tiles):
         self.speedY -= ACC

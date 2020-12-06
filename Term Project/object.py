@@ -159,6 +159,7 @@ class Potion(Object):
         
         self.kind = data['name'][1]
         self.ate_sound = load_wav('./res/sound/hpup_' + self.kind + '.wav')
+        self.ate_sound.set_volume(128)
         self.spr = gfw.Sprite('./res/potion_' + self.kind + '.png')
 
         self.spr.x = data["x"] + offset_x
@@ -175,6 +176,13 @@ class Potion(Object):
         gfw.renderer.add(self.spr)
 
         self.elapsed_time = 0.0
+
+        self.hp = 0.0
+        if self.kind == 0:
+            self.hp = 10.0
+        else:
+            self.hp = 20.0
+
         self.init_col_box()
 
     def update(self):
