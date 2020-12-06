@@ -34,3 +34,7 @@ class Renderer:
 
     def add_font(self, font):
         self.fonts.append(font)
+
+    def clear(self):
+        self.sprites.clear()
+        self.fonts.clear()

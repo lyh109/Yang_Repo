@@ -92,7 +92,8 @@ class Cookie:
                     self.cookie.cell_index_x = 9
                     self.cookie.cell_index_y = 5
             else:
-                self.cookie.cell_index_x = min(9, self.cookie.cell_index_x + 1)
+                self.cookie.cell_index_x = max(5, min(9, self.cookie.cell_index_x + 1))
+                self.cookie.cell_index_y = 1
                 
             self.elapsed_time = 0.0
 
@@ -110,10 +111,8 @@ class Cookie:
         if self.hp > 0.0:   
             self.cookie.alpha = 0.5
             return True
-        else:
-            self.cookie.cell_index_x = 5
-            self.cookie.cell_index_y = 1
-            return False
+
+        return False
 
     def DoAction(self, tiles):
         self.speedY -= ACC

@@ -24,7 +24,7 @@ class MainState:
         self.font.color_r = 0
         self.font.color_g = 0
         self.font.color_b = 0
-        self.font.text = 'Score: 0'
+        self.font.text = 'SCORE: 0'
         gfw.renderer.add_font(self.font)
         
         self.background1 = Background('./res/bk/bk6-1.png', 2, 400.0, 2)
@@ -40,7 +40,7 @@ class MainState:
         for i in range(10):
             objects = None
             #with open('./res/data/objects' + str(random.randrange(0, self.ITEM_P_COUNT)) + '.json') as f:
-            with open('./res/data/objects4.json') as f:
+            with open('./res/data/objects1.json') as f:
                 objects = json.load(f)
 
             for o in objects:
@@ -87,8 +87,12 @@ class MainState:
     def update(self):
         cookie_left, cookie_right, cookie_bottom, cookie_top = self.cookie.get_col_box()
     
-        self.cookie.hp - max(0.0, gfw.delta_time * 2.0)
         if self.cookie.hp > 0.0:
+            self.cookie.hp = max(0.0, self.cookie.hp - gfw.delta_time * 2.0)
+            if self.cookie.hp <= 0.0:
+                self.game_over_sound.play()
+                return
+
             self.background1.update()
             self.background2.update()
             self.background3.update()
@@ -134,7 +138,20 @@ class MainState:
         self.cookie.update(self.tiles)
         draw_rectangle(cookie_left, cookie_bottom, cookie_right, cookie_top)
 
-        self.font.text = 'score: ' + str(int(self.score))
+        self.font.text = 'SCORE: ' + str(int(self.score))
+
+        if gfw.eh.get_key_down(gfw.SDLK_LEFT):
+            gfw.pop_state()
+
+
+    def pause(self):
+        pass
+
+    def resume(self):
+        pass
+
+    def exit(self):
+        gfw.renderer.clear()
         
 if __name__ == '__main__':
     gfw.init(MainState())
