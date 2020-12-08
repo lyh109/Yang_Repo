@@ -11,20 +11,9 @@ DOUBLE_JUMP = 2
 SLIDE = -1
 
 class Cookie:
-    def __init__(self, image_path, cell_image_w, cell_image_h, min_y):
-        # #self.cookie = gfw.Sprite('./res/Brave_Cookie.png')
-        # self.cookie.is_clip_image = True
-        # self.cookie.padding_size = 2
-        # self.cookie.cell_image_width = 270
-        # self.cookie.cell_image_height = 270
-        # self.cookie.cell_index_x = 1
-        # self.cookie.cell_index_y = 4
-        # self.cookie.scale_x = 1.0
-        # self.cookie.scale_y = 1.0
-        # self.cookie.x = 120.0
-        # self.cookie.y = MIN_Y
-
+    def __init__(self, image_path, cell_image_w, cell_image_h, min_y, tile_y):
         self.min_y = min_y
+        self.tile_y = tile_y
 
         self.cookie = gfw.Sprite(image_path)
         self.cookie.is_clip_image = True
@@ -160,14 +149,14 @@ class Cookie:
                     if self.state >= JUMP:
                         self.state = RUN
 
-                    to_y = top + 130
+                    to_y = top + self.tile_y
                     break
         
         self.cookie.y = to_y
 
         if gfw.eh.get_key_down(gfw.SDLK_SPACE):
             if self.state < DOUBLE_JUMP:
-                self.speedY = 20.0
+                self.speedY = 21.0
                 self.state = JUMP if self.state < JUMP else DOUBLE_JUMP
                 self.cookie.cell_index_x = 1
                 self.jump_sound.play()
@@ -204,7 +193,7 @@ class Cookie:
     
 class BraveCookie(Cookie):
     def __init__(self):
-        super().__init__('./res/Brave_Cookie.png', 270, 270, 250.0)
+        super().__init__('./res/Brave_Cookie.png', 270, 270, 250.0, 130.0)
 
         self.run_col_box_w = 100.0
         self.run_col_box_h = 130.0
@@ -224,11 +213,13 @@ class BraveCookie(Cookie):
         
 class ZombieCookie(Cookie):
     def __init__(self):
-        super().__init__('./res/Zombie_Cookie.png', 320, 320, 275.0)
+        super().__init__('./res/Zombie_Cookie.png', 320, 320, 275.0, 150.0)
+
+        self.life = 2
 
         self.run_col_box_w = 100.0
         self.run_col_box_h = 130.0
-        self.run_col_offset_y = 95.0
+        self.run_col_offset_y = 90.0
 
         self.slide_col_box_w = 160.0
         self.slide_col_box_h = 70.0
