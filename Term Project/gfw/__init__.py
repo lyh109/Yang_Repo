@@ -19,6 +19,8 @@ def init(state):
     global renderer
 
     open_canvas(SCREEN_WIDTH, SCREEN_HEIGHT)
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, b"1")
+    
     renderer = Renderer()
     
     states.append(state)
