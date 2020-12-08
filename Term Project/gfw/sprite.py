@@ -1,8 +1,8 @@
 from pico2d import *
 
-class Sprite:
-    images = {}
+images = {}
 
+class Sprite:
     def __init__(self, image_path):
         self.x = 0.0
         self.y = 0.0
@@ -21,7 +21,7 @@ class Sprite:
         self.cell_index_y = 0
         self.padding_size = 0
         
-        if not image_path in self.images:
-            self.images[image_path] = load_image(image_path)
+        if not image_path in images:
+            images[image_path] = load_image(image_path)
 
-        self.image = self.images[image_path]
+        self.image = images[image_path]
